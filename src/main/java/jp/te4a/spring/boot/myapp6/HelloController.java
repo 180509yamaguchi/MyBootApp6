@@ -1,4 +1,4 @@
-package jp.te4a.spring.boot.myapp7;
+package jp.te4a.spring.boot.myapp6;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,27 +12,27 @@ import org.springframework.web.servlet.ModelAndView;
 public class HelloController{
 	@Autowired
 	BookService bookService;
-	@RequestMapping("books/list")
+	@RequestMapping("/")
 	public String index(Model model) {
 		model.addAttribute("msg", "this is setting message");
-		return "books/list";
+		return "index";
 	}
-	@RequestMapping(value="books/list", method=RequestMethod.POST)
+	@RequestMapping(value="/post", method=RequestMethod.POST)
 	 public ModelAndView postForm(@RequestParam("id") String id, 
 	@RequestParam("title") String title,@RequestParam("writter")String writter, 
 	@RequestParam("publisher") String publisher,@RequestParam("price") String price) {
-		ModelAndView mv = new ModelAndView("books/list");
+		ModelAndView mv = new ModelAndView("index");
 		bookService.save(new BookBean(Integer.valueOf(id), title, writter, publisher, 
 				Integer.valueOf(price)));
 		
-		/*StringBuffer buff = new StringBuffer();
+		StringBuffer buff = new StringBuffer();
 		buff.append("<HR>");
 		for(BookBean bean:bookService.findAll()) {
 			buff.append("ID:" + bean.getId() + "<BR>" + "タイトル:"+ bean.getTitle() + 
 					 "<BR>"+ "著者:"+ bean.getWritter() + "<BR>" + "出版社:"+ bean.getPublisher() + 
 							 "<BR>"+ "価格:"+ bean.getPrice() + "<BR><HR>");
-		}*/
-		mv.addObject("books", bookService.findAll());
+		}
+		mv.addObject("msg", buff.toString());
 		return mv;
 		}
 	}
